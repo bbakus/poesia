@@ -1,38 +1,111 @@
-.App {
-  text-align: center;
+* {
+    font-family: 'Courier New', Courier, monospace;
+    text-align : center
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+
+
+.body-text{
+    width: 20%; /* Or whatever width you need */
+    overflow-wrap: normal;
+    word-break: normal;
+    hyphens: none;
+    text-align: left;
+    margin-left: auto;
+    margin-right: auto;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
+.body-text p{
+    text-align: left;
+    width: 55%;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 20px;
+    padding: 20px;
+}
+
+.begin-button{
+    margin: 20px;
+    font-size: 20px;
+}
+
+.text-prompt{
+    padding: 50px;
+    margin-top: 70px;
+}
+
+h2{
+    font-size: 50px;
+    margin-top: 150px;
+}
+
+.text-prompt-container{
+    padding: 20px;
+}
+
+
+.poem-text pre{
+    text-align: left;
+    margin-left: 42%;
+    margin-right: 50%;
+    padding: 30px;
+}
+
+h3{
+    padding: 50px;
+}
+
+
+.rorschach-image img{
+    width: 30%;
+    height: auto;
+    padding: 20px;
+    border-radius: 60px;
+}
+
+.form-group{
+    
+    padding: 5px;
+    
+}
+
+.form-group input{
+    margin: 20px;
+}
+
+
+.completion-message{
+    transform: translate(0%, 3000%)
+}
+
+
+.begin-button {
+    background-color: #f8f8f8;
+    color: #333;
+    font-family: "Courier New", monospace;
+    font-size: 16px;
+    padding: 10px 20px;
+    border: 2px solid #333;
+    border-radius: 2px;
+    box-shadow: 0 4px 0 #333;
+    margin: 4px 2px;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.1s ease;
+    position: relative;
   }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+  
+  .begin-button:hover {
+    background-color: #f0f0f0;
   }
-  to {
-    transform: rotate(360deg);
+  
+  .begin-button:active {
+    box-shadow: 0 1px 0 #333;
+    transform: translateY(3px);
   }
-}
+  
+  .begin-button:focus {
+    outline: none;
+    border-color: #000;
+  }
