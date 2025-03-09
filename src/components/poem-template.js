@@ -6,14 +6,14 @@ function Template({allImagePrompts, allTextPrompts}){
 
 
     
-    // Create your poem by interpolating the collected prompts
+    
     const generatePoem = () => {
-        // Check if we have any prompts to work with
+        
         if (allImagePrompts.length === 0 && allTextPrompts.length === 0) {
             return
         }
     
-        // Start with your template string with placeholders
+        
         let poemTemplate = `
         in [IMAGE_ADJ_5] [IMAGE_NOUN_6] 
         I see [IMAGE_NOUN_3] [IMAGE_ADJ_1]
@@ -41,7 +41,7 @@ function Template({allImagePrompts, allTextPrompts}){
         
         `;
     
-        // Replace image prompt placeholders
+        
         allImagePrompts.forEach((prompt, index) => {
         const placeholderNum = index + 1;
         poemTemplate = poemTemplate.replace(`[IMAGE_NOUN_${placeholderNum}]`, prompt.noun || "");
@@ -49,17 +49,12 @@ function Template({allImagePrompts, allTextPrompts}){
         poemTemplate = poemTemplate.replace(`[IMAGE_CONNECTOR_${placeholderNum}]`, prompt.connector || "");
         });
     
-        // Replace text prompt placeholders
+       
         allTextPrompts.forEach((prompt, index) => {
         const placeholderNum = index + 1;
         poemTemplate = poemTemplate.replace(`[TEXT_PROMPT_${placeholderNum}]`, prompt || "");
         });
     
-        // // Clean up any unreplaced placeholders
-        // poemTemplate = poemTemplate.replace(/\[IMAGE_NOUN_\d+\]/g, "something");
-        // poemTemplate = poemTemplate.replace(/\[IMAGE_ADJ_\d+\]/g, "mysterious");
-        // poemTemplate = poemTemplate.replace(/\[IMAGE_CONNECTOR_\d+\]/g, "connecting");
-        // poemTemplate = poemTemplate.replace(/\[TEXT_PROMPT_\d+\]/g, "words like water");
     
         return poemTemplate;
     };
@@ -67,7 +62,7 @@ function Template({allImagePrompts, allTextPrompts}){
     return (
         <div className="poem-container">
         <div className="poem-text">
-            {/* Use white-space: pre-wrap in your CSS to preserve line breaks */}
+            
             <pre>{generatePoem()}</pre>
         </div>
         </div>

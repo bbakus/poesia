@@ -72,7 +72,7 @@ function Prompt() {
             />
         ) : (
           <div className="completion-message">
-            <button onClick={handleReset}>create another poem</button>
+            <button className="create-new-button" onClick={handleReset}>create another poem</button>
           </div>
         )}
       </div>

@@ -43,12 +43,19 @@ h2{
     padding: 20px;
 }
 
+.poem-text{
+    border-color: #000;
+}
+
 
 .poem-text pre{
     text-align: left;
-    margin-left: 42%;
+    margin-left: 40%;
     margin-right: 50%;
     padding: 30px;
+    font-size: 20px;
+    margin-top: -50px;
+    
 }
 
 h3{
@@ -106,6 +113,39 @@ h3{
   }
   
   .begin-button:focus {
+    outline: none;
+    border-color: #000;
+  }
+
+
+  .create-new-button {
+    background-color: #f8f8f8;
+    color: #333;
+    font-family: "Courier New", monospace;
+    font-size: 16px;
+    padding: 10px 20px;
+    border: 2px solid #333;
+    border-radius: 2px;
+    box-shadow: 0 4px 0 #333;
+    margin: 4px 2px;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.1s ease;
+    position: relative;
+    transform: translate(0, -2000%)
+  }
+  
+  .create-new-button:hover {
+    background-color: #f0f0f0;
+  }
+  
+  .create-new-button:active {
+    box-shadow: 0 1px 0 #333;
+    transform: translateY(3px);
+  }
+  
+  .create-new-button:focus {
     outline: none;
     border-color: #000;
   }
