@@ -13,6 +13,8 @@
     text-align: left;
     margin-left: auto;
     margin-right: auto;
+    
+    
 }
 
 .body-text p{
@@ -22,6 +24,8 @@
     margin-right: auto;
     font-size: 20px;
     padding: 20px;
+    line-height: 40px;
+    
 }
 
 .begin-button{
@@ -37,6 +41,7 @@
 h2{
     font-size: 50px;
     margin-top: 150px;
+    padding: 10px;
 }
 
 .text-prompt-container{
@@ -54,7 +59,7 @@ h2{
     margin-right: 50%;
     padding: 30px;
     font-size: 20px;
-    margin-top: -50px;
+    margin-top: 0px;
     
 }
 
@@ -81,9 +86,9 @@ h3{
 }
 
 
-.completion-message{
+/* .completion-message{
     transform: translate(0%, 3000%)
-}
+} */
 
 
 .begin-button {
@@ -97,28 +102,28 @@ h3{
     box-shadow: 0 4px 0 #333;
     margin: 4px 2px;
     cursor: pointer;
-    text-transform: uppercase;
+    border-radius: 15px;;
     letter-spacing: 1px;
     transition: all 0.1s ease;
     position: relative;
-  }
+}
   
-  .begin-button:hover {
+.begin-button:hover {
     background-color: #f0f0f0;
-  }
+}
   
-  .begin-button:active {
+.begin-button:active {
     box-shadow: 0 1px 0 #333;
     transform: translateY(3px);
-  }
+}
   
-  .begin-button:focus {
+.begin-button:focus {
     outline: none;
     border-color: #000;
-  }
+}
 
 
-  .create-new-button {
+.create-new-button {
     background-color: #f8f8f8;
     color: #333;
     font-family: "Courier New", monospace;
@@ -129,23 +134,74 @@ h3{
     box-shadow: 0 4px 0 #333;
     margin: 4px 2px;
     cursor: pointer;
-    text-transform: uppercase;
     letter-spacing: 1px;
     transition: all 0.1s ease;
-    position: relative;
-    transform: translate(0, -2000%)
-  }
+    position: absolute;
+    border-radius: 15px;;
+    margin-top: 26%;
+    margin-left: -5%;
+    
+}
   
-  .create-new-button:hover {
-    background-color: #f0f0f0;
-  }
-  
-  .create-new-button:active {
-    box-shadow: 0 1px 0 #333;
-    transform: translateY(3px);
-  }
-  
-  .create-new-button:focus {
-    outline: none;
-    border-color: #000;
-  }
+.create-new-button:hover {
+background-color: #f0f0f0;
+}
+
+.create-new-button:active {
+box-shadow: 0 1px 0 #333;
+transform: translateY(3px);
+}
+
+.create-new-button:focus {
+outline: none;
+border-color: #000;
+}
+
+.continue-button {
+background-color: #f8f8f8;
+color: #333;
+font-family: "Courier New", monospace;
+font-size: 16px;
+padding: 10px 20px;
+border: 2px solid #333;
+border-radius: 2px;
+box-shadow: 0 4px 0 #333;
+margin: 4px 2px;
+cursor: pointer;
+border-radius: 15px;
+letter-spacing: 1px;
+transition: all 0.1s ease;
+position: relative;
+
+}
+
+.continue-button:hover {
+background-color: #f0f0f0;
+}
+
+.continue-button:active {
+box-shadow: 0 1px 0 #333;
+transform: translateY(3px);
+}
+
+.continue-button:focus {
+outline: none;
+border-color: #000;
+}
+
+.input{
+background-color: #f8f8f8;
+color: #333;
+font-family: "Courier New", monospace;
+font-size: 16px;
+padding: 10px 20px;
+border: 2px solid #333;
+border-radius: 2px;
+box-shadow: 0 4px 0 #333;
+margin: 4px 2px;
+border-radius: 15px;
+
+letter-spacing: 1px;
+transition: all 0.1s ease;
+position: relative;
+}

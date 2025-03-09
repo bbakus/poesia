@@ -1,120 +1,133 @@
 import {useState, useEffect} from 'react'
 
+function Texts({onSubmitTextPrompt, onPromptSwitch, promptNumber=1}){
+  const [word, setWord] = useState('')
+  const [currentPrompt, setCurrentPrompt] = useState("")
+  const [shuffledPrompts, setShuffledPrompts] = useState([])
+  
+  const textPrompts = [
+    "what are or were the color of your mother's eyes.",
+    "leave the ______",
+    "you ______ me",
+    "tired of ______",
+    "waiting for _____",
+    "the texture you last touched",
+    "a nostalgic scent",
+    "a bright place",
+    "the last thing that hurt you",
+    "_____ in here",
+    "what home feels like",
+    "I'm just ______",
+    "kept in a cage",
+    "a _____ cloud",
+    "what melts",
+    "something sacred",
+    "your last nightmare",
+    "a _____ storm",
+    "arms",
+    "tall",
+    "crawl into _____",
+    "a celestial object",
+    "like a panther",
+    "a kind of glance",
+    "the color of bliss",
+    "a place for solitude",
+    "a precious metal",
+    "your birthstone",
+    "something in a box",
+    "heartache",
+    "a fear",
+    "dressed in _____",
+    "a weakness of yours",
+    "winter is _____",
+    "field of ______",
+    "snowy mountains",
+    "something you cherish",
+    "a type of fabric",
+    "within _____, interlinked",
+    "a structure",
+    "something sharp",
+    "what happens when you panic",
+    "a memorable dream",
+    "when you think of someone who wronged you",
+    "underneath the _____",
+    "above the ______",
+    "something that describes your father",
+    "you're crying, why?",
+    "the streets are _____ right now"
+  ]
+  
+  
 
-
-function Texts({onSubmitTextPrompt, onPromptSwitch}){
-
-
-    const [word, setWord] = useState('')
-
-    const [currentPrompt, setCurrentPrompt] = useState("")
-    const [usedPrompts, setUsedPrompts] = useState([])
-
-
-    function selectNewPrompt(){
-        const prompt = getRandomItem(textPrompts, usedPrompts)
-        if(prompt){
-            setCurrentPrompt(prompt)
-            setUsedPrompts([...usedPrompts, prompt])
-        }
+  useEffect(() => {
+    const shuffleArray = (array) => {
+      const shuffled = [...array];
+      for (let i = shuffled.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+      }
+      return shuffled;
+    };
+    
+    // Only shuffle if we haven't already
+    if (shuffledPrompts.length === 0) {
+      const shuffled = shuffleArray(textPrompts);
+      setShuffledPrompts(shuffled);
+      console.log("Created shuffled array:", shuffled);
     }
-
-
-    const getRandomItem = (array, excludeItems = []) => {
-        // Filter out items that have been used already
-        const availableItems = array.filter(item => !excludeItems.includes(item));
-        
-        // If all items have been used, you could either reset or return null
-        if (availableItems.length === 0) {
-          // Optional: reset the exclusion list if all items have been used
-          return array[Math.floor(Math.random() * array.length)];
-        }
+  }, []);
+  
+  // Update the current prompt whenever promptNumber changes
+  useEffect(() => {
+    if (shuffledPrompts.length > 0) {
+      // Make sure we're getting a different prompt each time
+      const promptIndex = (promptNumber - 1) % shuffledPrompts.length;
+      const nextPrompt = shuffledPrompts[promptIndex];
+      setCurrentPrompt(nextPrompt);
+      console.log(`Showing prompt ${promptIndex + 1} of ${shuffledPrompts.length}: "${nextPrompt}"`);
     }
-
-
-    function handleSubmit(){
-
-        onPromptSwitch(true)
-        selectNewPrompt()
-        onSubmitTextPrompt(word)
-
+  }, [promptNumber, shuffledPrompts]);
+  
+ 
+  
+  function handleSubmit(e){
+    e.preventDefault(); 
+    
+    onSubmitTextPrompt(word)
+    
+    setWord('')
+    
+    onPromptSwitch(true)
+    
+  }
+  
+  const handleKeyDown = (e) => {
+    if (e.key === ' ' || e.keyCode === 32) {
+      e.preventDefault();
     }
-
-    const textPrompts = [
-        "what are or were the color of your mother's eyes.", 
-        "bless the ______",
-        "you ______ me",
-        "tired of ______",
-        "can't wait for",
-        "the texture of your last meal",
-        "a nostalgic scent",
-        "how you feel when you wake up",
-        "the last thing that hurt you",
-        "_____ in here",
-        "what home feels like",
-        "I've always _____ you",
-        "Kept in a cage",
-        "a _____ cloud",
-        "what does a shower feel like",
-        "where do you keep something sacred",
-        "your last nightmare",
-        "this _____ storm",
-        "arms",
-        "the last word you heard",
-        "crawl into _____",
-        "a celestial object",
-        "what feels far away",
-        "a ripe tangerine",
-        "don't _____ me",
-        "a place for solitude",
-        "a precious metal",
-        "your birthstone",
-        "something in a box",
-        "heartache",
-        "a fear",
-        "dressed in _____",
-        "expensive",
-        "cheap",
-
-
-    ]
-
-    useEffect(() => {
-        const randomIndex = Math.floor(Math.random() * textPrompts.length)
-        setCurrentPrompt(textPrompts[randomIndex])
-    },[])
-
-
-    const handleKeyDown = (e) => {
-        // Check if the key pressed is a space
-        if (e.key === ' ' || e.keyCode === 32) {
-          e.preventDefault(); // This prevents the space from being entered
-        }
-      };
-
-    return (
-        <div className="text-prompt-container">
-          <div className="text-prompt">
-            <h3>{currentPrompt}</h3>
-          </div>
-          
-          <form onSubmit={handleSubmit}>
-            <div className="form-group">
-              <input 
-                type="text" 
-                value={word}
-                onChange={(e) => setWord(e.target.value)}
-                onKeyDown={handleKeyDown}
-                placeholder="Enter one word"
-                required
-              />
-            </div>
-            
-            <button type="submit">continue</button>
-          </form>
+  };
+  
+  return (
+    <div className="text-prompt-container">
+      <div className="text-prompt">
+        <h3>{currentPrompt}</h3>
+      </div>
+      <form onSubmit={handleSubmit}>
+        <div className="form-group">
+          <input
+            className="input"
+            type="text"
+            value={word}
+            onChange={(e) => setWord(e.target.value)}
+            onKeyDown={handleKeyDown}
+            placeholder="Enter one word"
+            required
+          />
         </div>
-      );
+        <button className="continue-button" type="submit">continue</button>
+      </form>
+    </div>
+  );
 }
-
 
 export default Texts

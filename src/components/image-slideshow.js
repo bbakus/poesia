@@ -1,90 +1,69 @@
 import { useState, useEffect } from "react";
 import imageData from "../data/db.json";
 
-function Images({ onSubmitImagePrompt, onPromptSwitch }) {
+function Images({ onSubmitImagePrompt, onPromptSwitch, promptNumber }) {
   const [pictures, setPictures] = useState([]);
   const [currentImage, setCurrentImage] = useState('');
   const [noun, setNoun] = useState('');
   const [adjective, setAdjective] = useState('');
   const [connector, setConnector] = useState('');
-  const [usedImages, setUsedImages] = useState([])
 
-  
-
-    function selectNewImage(){
-        const newImage = getRandomItem(pictures, usedImages)
-        if (newImage){
-            setCurrentImage(newImage)
-            setUsedImages([...usedImages, newImage])
-        }
+  // Function to shuffle an array (Fisher-Yates algorithm)
+  const shuffleArray = (array) => {
+    const shuffled = [...array];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
     }
+    return shuffled;
+  };
 
-
-    const getRandomItem = (array, excludeItems = []) => {
-        // Filter out items that have been used already
-        const availableItems = array.filter(item => !excludeItems.includes(item));
-        
-        // If all items have been used, you could either reset or return null
-        if (availableItems.length === 0) {
-          // Optional: reset the exclusion list if all items have been used
-          return array[Math.floor(Math.random() * array.length)];
-        }
-    }
-
-
-
+  // Load and shuffle images on component mount
   useEffect(() => {
-    setPictures(imageData);
-    // Select a random image when the component loads
-    if (imageData.length > 0) {
-      const randomIndex = Math.floor(Math.random() * imageData.length);
-      setCurrentImage(imageData[randomIndex]);
-      
-    }
-  }, []);
+    const shuffledImages = shuffleArray(imageData);
+    setPictures(shuffledImages);
+    
+    // Use promptNumber to determine which image to show
+    // promptNumber starts at 1, so subtract 1 for zero-based index
+    const imageIndex = (promptNumber - 1) % shuffledImages.length;
+    setCurrentImage(shuffledImages[imageIndex]);
+    
+    console.log(`Showing image ${imageIndex + 1} of ${shuffledImages.length}`);
+  }, [promptNumber]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onPromptSwitch(false)
     
-    selectNewImage()
-
-
     onSubmitImagePrompt({
       noun: noun,
       adjective: adjective,
       connector: connector
     });
     
-    // Clear the inputs
     setNoun('');
     setAdjective('');
     setConnector('');
     
-    // Get next random image
-    const randomIndex = Math.floor(Math.random() * pictures.length);
-    setCurrentImage(pictures[randomIndex]);
+    onPromptSwitch(false);
   };
-
-
+  
   const handleKeyDown = (e) => {
-    // Check if the key pressed is a space
     if (e.key === ' ' || e.keyCode === 32) {
-      e.preventDefault(); // This prevents the space from being entered
+      e.preventDefault();
     }
   };
-
+  
   return (
     <div className="rorschach-container">
       <div className="rorschach-image">
         <img src={currentImage} alt="Rorschach inkblot" />
       </div>
-      
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label>what do you see?</label>
-          <input 
-            type="text" 
+          <input
+            className="input"
+            type="text"
             value={noun}
             onChange={(e) => setNoun(e.target.value)}
             onKeyDown={handleKeyDown}
@@ -92,30 +71,31 @@ function Images({ onSubmitImagePrompt, onPromptSwitch }) {
             required
           />
         </div>
-        
         <div className="form-group">
           <label>describe it.</label>
-          <input 
-            type="text" 
+          <input
+            className="input"
+            type="text"
             value={adjective}
+            onKeyDown={handleKeyDown}
             onChange={(e) => setAdjective(e.target.value)}
             placeholder="enter an adjective"
             required
           />
         </div>
-        
         <div className="form-group">
-          <label>a feeling</label>
-          <input 
-            type="text" 
+          <label>a verb or adverb</label>
+          <input
+            className="input"
+            type="text"
             value={connector}
+            onKeyDown={handleKeyDown}
             onChange={(e) => setConnector(e.target.value)}
-            placeholder="is, was, with, all, told, held..."
+            placeholder="enter a verb"
             required
           />
         </div>
-        
-        <button type="submit">continue</button>
+        <button className="continue-button" type="submit">continue</button>
       </form>
     </div>
   );
