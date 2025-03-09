@@ -1,10 +1,11 @@
-import {useState, useEffect} from 'react'
+import {useState, useEffect, useRef} from 'react'
 
 function Texts({onSubmitTextPrompt, onPromptSwitch, promptNumber=1}){
   const [word, setWord] = useState('')
   const [currentPrompt, setCurrentPrompt] = useState("")
-  const [shuffledPrompts, setShuffledPrompts] = useState([])
-  
+  const shuffledSequenceRef = useRef(null);
+
+
   const textPrompts = [
     "what are or were the color of your mother's eyes.",
     "leave the ______",
@@ -17,7 +18,7 @@ function Texts({onSubmitTextPrompt, onPromptSwitch, promptNumber=1}){
     "the last thing that hurt you",
     "_____ in here",
     "what home feels like",
-    "I'm just ______",
+    "I'm just a ______",
     "kept in a cage",
     "a _____ cloud",
     "what melts",
@@ -29,7 +30,7 @@ function Texts({onSubmitTextPrompt, onPromptSwitch, promptNumber=1}){
     "crawl into _____",
     "a celestial object",
     "like a panther",
-    "a kind of glance",
+    "a _____ look",
     "the color of bliss",
     "a place for solitude",
     "a precious metal",
@@ -59,47 +60,49 @@ function Texts({onSubmitTextPrompt, onPromptSwitch, promptNumber=1}){
   
   
 
+// Shuffle function (Fisher-Yates algorithm)
+const shuffleArray = (array) => {
+    const shuffled = [...array];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled;
+  };
+  
+  // Create and store shuffled sequence on first render
   useEffect(() => {
-    const shuffleArray = (array) => {
-      const shuffled = [...array];
-      for (let i = shuffled.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-      }
-      return shuffled;
-    };
-    
-    // Only shuffle if we haven't already
-    if (shuffledPrompts.length === 0) {
-      const shuffled = shuffleArray(textPrompts);
-      setShuffledPrompts(shuffled);
-      console.log("Created shuffled array:", shuffled);
+    if (!shuffledSequenceRef.current) {
+      // Create array of indices [0, 1, 2, ..., length-1]
+      const indices = Array.from({ length: textPrompts.length }, (_, i) => i);
+      // Shuffle the indices
+      shuffledSequenceRef.current = shuffleArray(indices);
+      console.log("Created shuffled sequence:", shuffledSequenceRef.current);
     }
   }, []);
   
-  // Update the current prompt whenever promptNumber changes
+  // Select prompt based on promptNumber
   useEffect(() => {
-    if (shuffledPrompts.length > 0) {
-      // Make sure we're getting a different prompt each time
-      const promptIndex = (promptNumber - 1) % shuffledPrompts.length;
-      const nextPrompt = shuffledPrompts[promptIndex];
-      setCurrentPrompt(nextPrompt);
-      console.log(`Showing prompt ${promptIndex + 1} of ${shuffledPrompts.length}: "${nextPrompt}"`);
+    if (shuffledSequenceRef.current) {
+      // Get index from our shuffled sequence
+      const index = (promptNumber - 1) % textPrompts.length;
+      const selectedIndex = shuffledSequenceRef.current[index];
+      const selectedPrompt = textPrompts[selectedIndex];
+      
+      console.log(`Text prompt #${promptNumber}, using shuffled index ${selectedIndex}: "${selectedPrompt}"`);
+      setCurrentPrompt(selectedPrompt);
     }
-  }, [promptNumber, shuffledPrompts]);
-  
- 
-  
-  function handleSubmit(e){
-    e.preventDefault(); 
-    
-    onSubmitTextPrompt(word)
-    
-    setWord('')
-    
-    onPromptSwitch(true)
-    
+  }, [promptNumber]);
+
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    onSubmitTextPrompt(word);
+    setWord('');
+    onPromptSwitch(true);
   }
+ 
+
   
   const handleKeyDown = (e) => {
     if (e.key === ' ' || e.keyCode === 32) {
