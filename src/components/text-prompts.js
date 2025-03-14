@@ -1,98 +1,97 @@
-import {useState, useEffect, useRef} from 'react'
+import {useState, useEffect} from 'react'
 
-function Texts({onSubmitTextPrompt, onPromptSwitch, promptNumber=1}){
+function Texts({onSubmitTextPrompt, onPromptSwitch, setUsedTextPrompts, usedTextPrompts}){
   const [word, setWord] = useState('')
   const [currentPrompt, setCurrentPrompt] = useState("")
-  const shuffledSequenceRef = useRef(null);
+  const [prompts, setPrompts] = useState([])
+  
+  
 
 
   const textPrompts = [
-    "what are or were the color of your mother's eyes.",
-    "leave the ______",
-    "you ______ me",
+    "what is or was the color of your mother's eyes.",
+    "how are you feeling?",
+    "a sound you love",
     "tired of ______",
     "waiting for _____",
     "the texture you last touched",
     "a nostalgic scent",
-    "a bright place",
+    "a quiet place",
     "the last thing that hurt you",
-    "_____ in here",
+    "a month you wish could last forever",
     "what home feels like",
-    "I'm just a ______",
+    "underwater",
     "kept in a cage",
-    "a _____ cloud",
-    "what melts",
+    "something empty",
+    "something terrifying",
+    "something that melts",
     "something sacred",
     "your last nightmare",
-    "a _____ storm",
-    "arms",
-    "tall",
-    "crawl into _____",
+    "something underground",
+    "a tree you are fond of",
     "a celestial object",
-    "like a panther",
-    "a _____ look",
+    "a body of water",
+    "an art form",
     "the color of bliss",
     "a place for solitude",
-    "a precious metal",
+    "a precious metal or gem",
     "your birthstone",
     "something in a box",
-    "heartache",
     "a fear",
-    "dressed in _____",
+    "a piece of clothing",
     "a weakness of yours",
-    "winter is _____",
+    "something in summer",
     "field of ______",
-    "snowy mountains",
+    "something in winter",
+    "the color of you hair",
     "something you cherish",
     "a type of fabric",
-    "within _____, interlinked",
-    "a structure",
+    "what brings you peace",
     "something sharp",
-    "what happens when you panic",
+    "in the desert",
     "a memorable dream",
-    "when you think of someone who wronged you",
+    "what's inside your mouth",
     "underneath the _____",
     "above the ______",
     "something that describes your father",
     "you're crying, why?",
-    "the streets are _____ right now"
+    "a flower you love",
+    "an activity you do alone",
+    "the weather outside",
+    "a bird you saw recently",
+    "organic things to collect",
+    "your favorite time of day",
+    "something elemental",
+    "I can't _____",
+    "a fruit that you like",
+    "a taste you love",
+    "the color of darkness",
+    "the color of your shirt",
+    "I need _____",
+    "a terrain",
+    "something in a garden",
+    "a body of water",
   ]
   
   
-
-// Shuffle function (Fisher-Yates algorithm)
-const shuffleArray = (array) => {
-    const shuffled = [...array];
-    for (let i = shuffled.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-    }
-    return shuffled;
-  };
   
-  // Create and store shuffled sequence on first render
   useEffect(() => {
-    if (!shuffledSequenceRef.current) {
-      // Create array of indices [0, 1, 2, ..., length-1]
-      const indices = Array.from({ length: textPrompts.length }, (_, i) => i);
-      // Shuffle the indices
-      shuffledSequenceRef.current = shuffleArray(indices);
-      console.log("Created shuffled sequence:", shuffledSequenceRef.current);
-    }
+    setPrompts(textPrompts)
   }, []);
-  
-  // Select prompt based on promptNumber
+
+
   useEffect(() => {
-    if (shuffledSequenceRef.current) {
-      // Get index from our shuffled sequence
-      const index = (promptNumber - 1) % textPrompts.length;
-      const selectedIndex = shuffledSequenceRef.current[index];
-      const selectedPrompt = textPrompts[selectedIndex];
-      
-      console.log(`Text prompt #${promptNumber}, using shuffled index ${selectedIndex}: "${selectedPrompt}"`);
-      setCurrentPrompt(selectedPrompt);
-    }
-  }, [promptNumber]);
+    
+    const filteredPrompts = prompts.filter(prompt => !usedTextPrompts.includes(prompt));
+
+    const randomIndex = Math.floor(Math.random() * filteredPrompts.length);
+    const randomPrompt = filteredPrompts[randomIndex];
+    
+    setCurrentPrompt(randomPrompt);
+    
+   
+  }, [prompts]);
+
 
 
   function handleSubmit(e) {
@@ -100,7 +99,10 @@ const shuffleArray = (array) => {
     onSubmitTextPrompt(word);
     setWord('');
     onPromptSwitch(true);
+    setUsedTextPrompts([...usedTextPrompts, currentPrompt])
+    
   }
+
  
 
   

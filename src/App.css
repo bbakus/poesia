@@ -19,7 +19,7 @@
 
 .body-text p{
     text-align: left;
-    width: 55%;
+    width: 300px;
     margin-left: auto;
     margin-right: auto;
     font-size: 20px;
@@ -48,18 +48,19 @@ h2{
     padding: 20px;
 }
 
-.poem-text{
-    border-color: #000;
+
+.poem-text {
+    /* Add this container style to help with centering */
+    display: flex;
+    justify-content: center;
 }
 
 
 .poem-text pre{
     text-align: left;
-    margin-left: 40%;
-    margin-right: 50%;
+    width: max-content;
     padding: 30px;
     font-size: 20px;
-    margin-top: 0px;
     
 }
 
@@ -136,10 +137,12 @@ h3{
     cursor: pointer;
     letter-spacing: 1px;
     transition: all 0.1s ease;
-    position: absolute;
     border-radius: 15px;;
-    margin-top: 26%;
-    margin-left: -5%;
+    margin-left: -5rem;
+    margin-right: auto;
+    margin-top: 45rem;
+    position:absolute;
+    
     
 }
   
@@ -204,4 +207,15 @@ border-radius: 15px;
 letter-spacing: 1px;
 transition: all 0.1s ease;
 position: relative;
+}
+
+.cursor {
+    display: inline-block;
+    width: 2px;
+    animation: blink 1s step-end infinite;
+}
+  
+@keyframes blink {
+    from, to { opacity: 1; }
+    50% { opacity: 0; }
 }

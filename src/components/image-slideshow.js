@@ -1,35 +1,29 @@
 import { useState, useEffect } from "react";
 import imageData from "../data/db.json";
 
-function Images({ onSubmitImagePrompt, onPromptSwitch, promptNumber }) {
+function Images({ onSubmitImagePrompt, onPromptSwitch, setUsedImagePrompts, usedImagePrompts}) {
   const [pictures, setPictures] = useState([]);
-  const [currentImage, setCurrentImage] = useState('');
+  const [currentImage, setCurrentImage] = useState(null);
   const [noun, setNoun] = useState('');
   const [adjective, setAdjective] = useState('');
-  const [connector, setConnector] = useState('');
+  const [verb, setVerb] = useState('');
 
-  // Function to shuffle an array (Fisher-Yates algorithm)
-  const shuffleArray = (array) => {
-    const shuffled = [...array];
-    for (let i = shuffled.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-    }
-    return shuffled;
-  };
 
-  // Load and shuffle images on component mount
   useEffect(() => {
-    const shuffledImages = shuffleArray(imageData);
-    setPictures(shuffledImages);
+    setPictures(imageData);
+  }, []);
+
+  useEffect(() => {
     
-    // Use promptNumber to determine which image to show
-    // promptNumber starts at 1, so subtract 1 for zero-based index
-    const imageIndex = (promptNumber - 1) % shuffledImages.length;
-    setCurrentImage(shuffledImages[imageIndex]);
+    const filteredPrompts = pictures.filter(prompt => !usedImagePrompts.includes(prompt))
     
-    console.log(`Showing image ${imageIndex + 1} of ${shuffledImages.length}`);
-  }, [promptNumber]);
+    const randomIndex = Math.floor(Math.random() * filteredPrompts.length);
+    const image = filteredPrompts[randomIndex];
+    setCurrentImage(image);
+    
+
+  }, [pictures]);
+  
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -37,15 +31,22 @@ function Images({ onSubmitImagePrompt, onPromptSwitch, promptNumber }) {
     onSubmitImagePrompt({
       noun: noun,
       adjective: adjective,
-      connector: connector
+      verb: verb
     });
+    
     
     setNoun('');
     setAdjective('');
-    setConnector('');
+    setVerb('');
     
     onPromptSwitch(false);
+
+    setUsedImagePrompts([...usedImagePrompts, currentImage])
+
   };
+
+
+
   
   const handleKeyDown = (e) => {
     if (e.key === ' ' || e.keyCode === 32) {
@@ -88,9 +89,9 @@ function Images({ onSubmitImagePrompt, onPromptSwitch, promptNumber }) {
           <input
             className="input"
             type="text"
-            value={connector}
+            value={verb}
             onKeyDown={handleKeyDown}
-            onChange={(e) => setConnector(e.target.value)}
+            onChange={(e) => setVerb(e.target.value)}
             placeholder="enter a verb"
             required
           />

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, use } from "react";
 import Images from "./image-slideshow";
 import Texts from "./text-prompts";
 import Template from "./poem-template";
@@ -11,26 +11,30 @@ function Prompt() {
   const [allImagePrompts, setAllImagePrompts] = useState([]);
   const [promptCount, setPromptCount] = useState(0);
   const [isComplete, setIsComplete] = useState(false);
+  const [usedTextPrompts, setUsedTextPrompts] = useState([])
+  const [usedImagePrompts, setUsedImagePrompts] = useState([])
   
   const TOTAL_PROMPTS = 20; 
 
-  // Handle text prompt submissions
-  useEffect(() => {
-    if (submitTextPrompt) {
-      setAllTextPrompts(prev => [...prev, submitTextPrompt]);
-      incrementPromptCount();
-    }
-  }, [submitTextPrompt]);
+ 
+useEffect(() => {
+  
+  if (submitTextPrompt) {
+    setAllTextPrompts([...allTextPrompts, submitTextPrompt]);
+    incrementPromptCount();
+  }
+}, [submitTextPrompt]);
 
-  // Handle image prompt submissions
-  useEffect(() => {
-    if (Object.keys(submitImagePrompt).length > 0) {
-      setAllImagePrompts(prev => [...prev, submitImagePrompt]);
-      incrementPromptCount();
-    }
-  }, [submitImagePrompt]);
+useEffect(() => {
+  
+  if (submitImagePrompt && Object.keys(submitImagePrompt).length > 0) {
+    setAllImagePrompts([...allImagePrompts, submitImagePrompt]);
+    
+    incrementPromptCount();
+  }
+}, [submitImagePrompt]);
 
-  // Common logic for incrementing count and checking completion
+  
   const incrementPromptCount = () => {
     setPromptCount(prevCount => {
       const newCount = prevCount + 1;
@@ -41,13 +45,16 @@ function Prompt() {
     });
   };
 
-  // Reset the component for a new poem
+ 
   const handleReset = () => {
     setAllTextPrompts([]);
     setAllImagePrompts([]);
     setPromptCount(0);
     setIsComplete(false);
     setPromptSwitch(false); // Start with text prompt
+    setUsedTextPrompts([])
+    setUsedImagePrompts([])
+
   };
 
   return(
@@ -62,6 +69,8 @@ function Prompt() {
               onPromptSwitch={setPromptSwitch}
               promptNumber={Math.ceil(allImagePrompts.length) + 1}
               remainingPrompts={TOTAL_PROMPTS - promptCount}
+              setUsedImagePrompts={setUsedImagePrompts}
+              usedImagePrompts={usedImagePrompts}
             /> 
           :
             <Texts 
@@ -69,6 +78,8 @@ function Prompt() {
               onPromptSwitch={setPromptSwitch}
               promptNumber={Math.ceil(allTextPrompts.length) + 1}
               remainingPrompts={TOTAL_PROMPTS - promptCount}
+              setUsedTextPrompts={setUsedTextPrompts}
+              usedTextPrompts={usedTextPrompts}
             />
         ) : (
           <div className="completion-message">

@@ -13,7 +13,11 @@ function Home({setPageChange}){
         <div>
             <h2>poesia</h2>
             <div className="body-text">
-                <p>poems are about truth. your truth, a truth you've seen, a truth you don't quite understand, any truth. poesia teaches you that creating poetry is not difficult, and that you are able to translate your thoughts, feelings, into something evocative.</p>
+                <p>poems are about love. they echo your heart and soul. poesia helps translate your memories and senses into something evocative.
+                before you begin, consider the words you choose. they will be a representation of you. think carefully, and take your time.
+                </p>
+            
+                
             </div>
             <div>
                 <button onClick={handlePageChange} className="begin-button">begin</button>
