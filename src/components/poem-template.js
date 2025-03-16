@@ -49,27 +49,150 @@ function Template({ allImagePrompts, allTextPrompts }) {
       poemTemplate = poemTemplate.replace(`[TEXT_PROMPT_${placeholderNum}]`, prompt || "");
     });
 
-    const connectingWords = ['and', 'or', 'like', 'but', 'so', 'since', 'unless', 'while', 'the', 'in', 'for', 'of', 'with', 'on', 'at', 'by', 'from', 'into', 'under', 'between', 'through', 'after', 'below', 'amid'] 
-    function getRandomWord(words) {
-      const randomIndex = Math.floor(Math.random() * words.length);
-      return words[randomIndex];
-    }
-    
-    function shuffleArray(array) {
-      const shuffled = [...array];
-      // Fisher-Yates shuffle algorithm
-      for (let i = shuffled.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    // Categorize connecting words by function
+    const connectingWords = {
+      conjunction: ['and', 'or', 'but', 'so', 'yet', 'for', 'nor'],
+      preposition: ['in', 'on', 'at', 'by', 'with', 'from', 'under', 'over', 'through', 'between', 'among', 'into'],
+      subordinating: ['while', 'although', 'since', 'unless', 'if', 'when', 'where', 'as'],
+      // Split articles into singular and plural for better control
+      singularArticles: ['a', 'an', 'the', 'this', 'my', 'your', 'his', 'her'],
+      pluralArticles: ['the', 'these', 'those', 'my', 'your', 'his', 'her', 'our', 'their'],
+      comparison: ['like', 'as', 'than'],
+      transitional: ['under', 'inside', 'above', 'below', 'within', 'without', 'despite', 'until', 'still', 'yet', 'now', 'then', 'here', 'what']
+    };
+
+    // Choose connecting words based on context
+    const selectConnector = (position) => {
+      // Analyze surrounding template to make contextual decisions
+      const linePosition = getLinePosition(poemTemplate, position);
+      const surroundingContext = getSurroundingContext(poemTemplate, position);
+      
+      // Check if we're connecting to plural nouns
+      const isPluralContext = surroundingContext.includes('NOUN') && checkForPlurality(surroundingContext);
+      
+      // Start of line typically needs articles or transitional words
+      if (linePosition === 'start') {
+        // Choose between singular and plural articles based on context
+        if (isPluralContext) {
+          return randomFromArray([...connectingWords.pluralArticles, ...connectingWords.transitional]);
+        } else {
+          return randomFromArray([...connectingWords.singularArticles, ...connectingWords.transitional]);
+        }
       }
-      return shuffled;
-    }
+      
+      // Middle of stanza often uses conjunctions
+      if (linePosition === 'middle') {
+        return randomFromArray(connectingWords.conjunction);
+      }
+      
+      // If we have verbs nearby, prepositions often work well
+      if (surroundingContext.includes('VERB')) {
+        return randomFromArray(connectingWords.preposition);
+      }
+      
+      // If we have adjectives nearby, comparison words might be appropriate
+      if (surroundingContext.includes('ADJ')) {
+        // For adjectives referring to plural nouns, make sure to use appropriate connectors
+        if (isPluralContext && surroundingContext.includes('NOUN')) {
+          // When connecting plural adjectives and nouns, avoid singular demonstratives
+          const appropriateWords = [...connectingWords.comparison, ...connectingWords.subordinating]
+            .filter(word => !['this', 'that'].includes(word));
+          return randomFromArray(appropriateWords);
+        }
+        return randomFromArray([...connectingWords.comparison, ...connectingWords.subordinating]);
+      }
+      
+      // If we're dealing with plural nouns but not at start of line
+      if (isPluralContext) {
+        // Special handling for demonstratives in the middle of text
+        if (Math.random() < 0.3) { // 30% chance to use a demonstrative
+          return randomFromArray(connectingWords.pluralArticles.filter(word => ['these', 'those'].includes(word)));
+        }
+        // Otherwise use prepositions or conjunctions that work with plurals
+        return randomFromArray([...connectingWords.conjunction, ...connectingWords.preposition]);
+      } else {
+        // For singular contexts, occasionally use singular demonstratives
+        if (Math.random() < 0.3) { // 30% chance to use a demonstrative
+          return randomFromArray(connectingWords.singularArticles.filter(word => ['this', 'that'].includes(word)));
+        }
+      }
+      
+      // Default to a random category, but respecting plurality
+      const categories = isPluralContext ? 
+        ['conjunction', 'preposition', 'subordinating', 'pluralArticles', 'comparison', 'transitional'] :
+        ['conjunction', 'preposition', 'subordinating', 'singularArticles', 'comparison', 'transitional'];
+      const randomCategory = categories[Math.floor(Math.random() * categories.length)];
+      return randomFromArray(connectingWords[randomCategory]);
+    };
     
-    const shuffledWords = shuffleArray(connectingWords);
-    shuffledWords.forEach((word, index) => {
-      const placeholderNum = index + 1;
-      poemTemplate = poemTemplate.replace(`[CONNECTOR_${placeholderNum}]`, word || "");
-    });
+    // Helper function to get surrounding context
+    const getSurroundingContext = (template, position) => {
+      const lines = template.split('\n');
+      for (let i = 0; i < lines.length; i++) {
+        if (lines[i].includes(position)) {
+          return lines[i];
+        }
+      }
+      return '';
+    };
+    
+    // Helper function to check if context suggests plural nouns
+    const checkForPlurality = (context) => {
+      // Check if we can determine plurality from actual filled values
+      for (let i = 1; i <= allImagePrompts.length; i++) {
+        if (context.includes(`[IMAGE_NOUN_${i}]`) && allImagePrompts[i-1]?.noun) {
+          const noun = allImagePrompts[i-1].noun;
+          // Simple plurality check - can be expanded for more complex rules
+          if (noun.endsWith('s') && !noun.endsWith('ss') && !noun.endsWith('us')) {
+            return true;
+          }
+        }
+      }
+      
+      // Check for plural text prompts (more challenging, simple heuristic)
+      for (let i = 1; i <= allTextPrompts.length; i++) {
+        if (context.includes(`[TEXT_PROMPT_${i}]`) && allTextPrompts[i-1]) {
+          const words = allTextPrompts[i-1].split(' ');
+          // Check last word for potential plurality
+          const lastWord = words[words.length - 1];
+          if (lastWord && lastWord.length > 2 && lastWord.endsWith('s') && 
+              !lastWord.endsWith('ss') && !lastWord.endsWith('us')) {
+            return true;  
+          }
+        }
+      }
+      
+      return false;
+    };
+    
+    // Helper function to get position in line/stanza
+    const getLinePosition = (template, connectorPosition) => {
+      const lines = template.split('\n');
+      for (let i = 0; i < lines.length; i++) {
+        if (lines[i].includes(connectorPosition)) {
+          if (lines[i].trim().startsWith(connectorPosition)) {
+            return 'start';
+          } else if (i % 3 === 1) { // Middle line of 3-line stanza
+            return 'middle';
+          }
+          return 'end';
+        }
+      }
+      return 'unknown';
+    };
+    
+    // Helper function to select random item from array
+    const randomFromArray = (array) => {
+      return array[Math.floor(Math.random() * array.length)];
+    };
+    
+    // Replace connector placeholders with contextually appropriate words
+    for (let i = 1; i <= 15; i++) {
+      const connectorPlaceholder = `[CONNECTOR_${i}]`;
+      if (poemTemplate.includes(connectorPlaceholder)) {
+        poemTemplate = poemTemplate.replace(connectorPlaceholder, selectConnector(connectorPlaceholder));
+      }
+    }
 
     return poemTemplate;
   };
