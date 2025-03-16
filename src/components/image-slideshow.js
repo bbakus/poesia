@@ -8,6 +8,11 @@ function Images({ onSubmitImagePrompt, onPromptSwitch, setUsedImagePrompts, used
   const [adjective, setAdjective] = useState('');
   const [verb, setVerb] = useState('');
 
+  // Helper function to ensure image paths work in both development and production
+  const getImagePath = (path) => {
+    // If the path already includes the /poesia prefix or we're in development, use it as is
+    return path;
+  };
 
   useEffect(() => {
     setPictures(imageData);
@@ -57,7 +62,7 @@ function Images({ onSubmitImagePrompt, onPromptSwitch, setUsedImagePrompts, used
   return (
     <div className="rorschach-container">
       <div className="rorschach-image">
-        <img src={currentImage} alt="Rorschach inkblot" />
+        <img src={getImagePath(currentImage)} alt="Rorschach inkblot" />
       </div>
       <form onSubmit={handleSubmit}>
         <div className="form-group">
