@@ -1,212 +1,176 @@
 * {
     font-family: 'Courier New', Courier, monospace;
-    text-align : center
+    text-align: center;
+    box-sizing: border-box;
 }
 
-
+/* Add responsive base setup */
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    overflow-x: hidden;
+}
 
 .body-text{
-    width: 20%; /* Or whatever width you need */
+    width: 90%;
+    max-width: 600px;
     overflow-wrap: normal;
     word-break: normal;
     hyphens: none;
     text-align: left;
     margin-left: auto;
     margin-right: auto;
-    
-    
 }
 
 .body-text p{
     text-align: left;
-    width: 300px;
+    width: 100%;
+    max-width: 600px;
     margin-left: auto;
     margin-right: auto;
-    font-size: 20px;
+    font-size: 18px;
     padding: 20px;
-    line-height: 40px;
-    
+    line-height: 1.6;
 }
 
 .begin-button{
     margin: 20px;
-    font-size: 20px;
+    font-size: 18px;
 }
 
 .text-prompt{
-    padding: 50px;
-    margin-top: 70px;
+    padding: 20px;
+    margin-top: 30px;
 }
 
 h2{
-    font-size: 50px;
-    margin-top: 150px;
+    font-size: 40px;
+    margin-top: 80px;
     padding: 10px;
 }
 
 .text-prompt-container{
     padding: 20px;
+    width: 90%;
+    max-width: 600px;
+    margin: 0 auto;
 }
-
 
 .poem-text {
-    /* Add this container style to help with centering */
     display: flex;
     justify-content: center;
+    width: 100%;
+    padding: 0 15px;
 }
-
 
 .poem-text pre{
     text-align: left;
-    width: max-content;
-    padding: 30px;
-    font-size: 20px;
-    
+    width: 100%;
+    max-width: 600px;
+    padding: 20px;
+    font-size: 16px;
+    white-space: pre-wrap;
+    word-wrap: break-word;
 }
 
 h3{
-    padding: 50px;
+    padding: 30px;
 }
 
+/* Fix for Rorschach image on mobile */
+.rorschach-container {
+    width: 100%;
+    padding: 10px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.rorschach-image {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
 .rorschach-image img{
-    width: 30%;
+    width: 80%;
+    max-width: 500px;
     height: auto;
-    padding: 20px;
-    border-radius: 60px;
+    padding: 10px;
+    border-radius: 30px;
 }
 
 .form-group{
-    
     padding: 5px;
-    
+    margin: 10px auto;
+    width: 90%;
+    max-width: 400px;
 }
 
 .form-group input{
-    margin: 20px;
+    margin: 10px auto;
+    width: 100%;
 }
 
-
-/* .completion-message{
-    transform: translate(0%, 3000%)
-} */
-
-
-.begin-button {
+/* Button styles */
+.begin-button,
+.create-new-button,
+.continue-button {
     background-color: #f8f8f8;
     color: #333;
     font-family: "Courier New", monospace;
     font-size: 16px;
     padding: 10px 20px;
     border: 2px solid #333;
-    border-radius: 2px;
+    border-radius: 15px;
     box-shadow: 0 4px 0 #333;
-    margin: 4px 2px;
+    margin: 15px auto;
     cursor: pointer;
-    border-radius: 15px;;
     letter-spacing: 1px;
     transition: all 0.1s ease;
-    position: relative;
+    display: inline-block;
 }
-  
-.begin-button:hover {
+
+.begin-button:hover,
+.create-new-button:hover,
+.continue-button:hover {
     background-color: #f0f0f0;
 }
-  
-.begin-button:active {
+
+.begin-button:active,
+.create-new-button:active,
+.continue-button:active {
     box-shadow: 0 1px 0 #333;
     transform: translateY(3px);
 }
-  
-.begin-button:focus {
+
+.begin-button:focus,
+.create-new-button:focus,
+.continue-button:focus {
     outline: none;
     border-color: #000;
 }
 
-
 .create-new-button {
+    position: relative;
+    margin: 40px auto;
+    display: block;
+}
+
+.input{
     background-color: #f8f8f8;
     color: #333;
     font-family: "Courier New", monospace;
     font-size: 16px;
     padding: 10px 20px;
     border: 2px solid #333;
-    border-radius: 2px;
+    border-radius: 15px;
     box-shadow: 0 4px 0 #333;
-    margin: 4px 2px;
-    cursor: pointer;
     letter-spacing: 1px;
     transition: all 0.1s ease;
-    border-radius: 15px;;
-    margin-left: -5rem;
-    margin-right: auto;
-    margin-top: 45rem;
-    position:absolute;
-    
-    
-}
-  
-.create-new-button:hover {
-background-color: #f0f0f0;
-}
-
-.create-new-button:active {
-box-shadow: 0 1px 0 #333;
-transform: translateY(3px);
-}
-
-.create-new-button:focus {
-outline: none;
-border-color: #000;
-}
-
-.continue-button {
-background-color: #f8f8f8;
-color: #333;
-font-family: "Courier New", monospace;
-font-size: 16px;
-padding: 10px 20px;
-border: 2px solid #333;
-border-radius: 2px;
-box-shadow: 0 4px 0 #333;
-margin: 4px 2px;
-cursor: pointer;
-border-radius: 15px;
-letter-spacing: 1px;
-transition: all 0.1s ease;
-position: relative;
-
-}
-
-.continue-button:hover {
-background-color: #f0f0f0;
-}
-
-.continue-button:active {
-box-shadow: 0 1px 0 #333;
-transform: translateY(3px);
-}
-
-.continue-button:focus {
-outline: none;
-border-color: #000;
-}
-
-.input{
-background-color: #f8f8f8;
-color: #333;
-font-family: "Courier New", monospace;
-font-size: 16px;
-padding: 10px 20px;
-border: 2px solid #333;
-border-radius: 2px;
-box-shadow: 0 4px 0 #333;
-margin: 4px 2px;
-border-radius: 15px;
-
-letter-spacing: 1px;
-transition: all 0.1s ease;
-position: relative;
+    width: 100%;
+    max-width: 300px;
 }
 
 .cursor {
@@ -218,4 +182,49 @@ position: relative;
 @keyframes blink {
     from, to { opacity: 1; }
     50% { opacity: 0; }
+}
+
+/* Media Queries for different screen sizes */
+@media (max-width: 768px) {
+    h2 {
+        font-size: 32px;
+        margin-top: 60px;
+    }
+    
+    .rorschach-image img {
+        width: 90%;
+    }
+    
+    .poem-text pre {
+        font-size: 14px;
+        padding: 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    h2 {
+        font-size: 28px;
+        margin-top: 40px;
+    }
+    
+    .rorschach-image img {
+        width: 95%;
+        border-radius: 20px;
+    }
+    
+    .form-group {
+        width: 95%;
+    }
+    
+    .input, 
+    .begin-button,
+    .create-new-button,
+    .continue-button {
+        font-size: 14px;
+    }
+    
+    .poem-text pre {
+        font-size: 12px;
+        padding: 10px;
+    }
 }
