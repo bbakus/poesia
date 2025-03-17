@@ -34,9 +34,9 @@ function Images({ onSubmitImagePrompt, onPromptSwitch, setUsedImagePrompts, used
     e.preventDefault();
     
     onSubmitImagePrompt({
-      noun: noun,
-      adjective: adjective,
-      verb: verb
+      noun: noun.toLowerCase(),
+      adjective: adjective.toLowerCase(),
+      verb: verb.toLowerCase()
     });
     
     

@@ -18,13 +18,13 @@ html, body {
     overflow-wrap: normal;
     word-break: normal;
     hyphens: none;
-    text-align: center;
+    text-align: left;
     margin-left: auto;
     margin-right: auto;
 }
 
 .body-text p{
-    text-align: center;
+    text-align: left;
     width: 100%;
     max-width: 600px;
     margin-left: auto;
@@ -65,7 +65,7 @@ h2{
 }
 
 .poem-text pre{
-    text-align: center;
+    text-align: left;
     width: 100%;
     max-width: 600px;
     padding: 20px;

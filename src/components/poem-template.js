@@ -55,7 +55,7 @@ function Template({ allImagePrompts, allTextPrompts }) {
       preposition: ['in', 'on', 'at', 'by', 'with', 'from', 'under', 'over', 'through', 'between', 'among', 'into'],
       subordinating: ['while', 'although', 'since', 'unless', 'if', 'when', 'where', 'as'],
       // Split articles into singular and plural for better control
-      singularArticles: ['a', 'an', 'the', 'this', 'my', 'your', 'his', 'her'],
+      singularArticles: ['the', 'this', 'my', 'your', 'his', 'her'],
       pluralArticles: ['the', 'these', 'those', 'my', 'your', 'his', 'her', 'our', 'their'],
       comparison: ['like', 'as', 'than'],
       transitional: ['under', 'inside', 'above', 'below', 'within', 'without', 'despite', 'until', 'still', 'yet', 'now', 'then', 'here', 'what']

@@ -96,7 +96,7 @@ function Texts({onSubmitTextPrompt, onPromptSwitch, setUsedTextPrompts, usedText
 
   function handleSubmit(e) {
     e.preventDefault();
-    onSubmitTextPrompt(word);
+    onSubmitTextPrompt(word.toLowerCase());
     setWord('');
     onPromptSwitch(true);
     setUsedTextPrompts([...usedTextPrompts, currentPrompt])
