@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/poesia/static/css/main.845f9e1c.css",
-    "main.js": "/poesia/static/js/main.d8ed96d6.js",
+    "main.js": "/poesia/static/js/main.5b7d0f8d.js",
     "index.html": "/poesia/index.html",
     "main.845f9e1c.css.map": "/poesia/static/css/main.845f9e1c.css.map",
-    "main.d8ed96d6.js.map": "/poesia/static/js/main.d8ed96d6.js.map"
+    "main.5b7d0f8d.js.map": "/poesia/static/js/main.5b7d0f8d.js.map"
   },
   "entrypoints": [
     "static/css/main.845f9e1c.css",
-    "static/js/main.d8ed96d6.js"
+    "static/js/main.5b7d0f8d.js"
   ]
 }
