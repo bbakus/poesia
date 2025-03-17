@@ -18,13 +18,13 @@ html, body {
     overflow-wrap: normal;
     word-break: normal;
     hyphens: none;
-    text-align: left;
+    text-align: center;
     margin-left: auto;
     margin-right: auto;
 }
 
 .body-text p{
-    text-align: left;
+    text-align: center;
     width: 100%;
     max-width: 600px;
     margin-left: auto;
@@ -65,7 +65,7 @@ h2{
 }
 
 .poem-text pre{
-    text-align: left;
+    text-align: center;
     width: 100%;
     max-width: 600px;
     padding: 20px;
@@ -94,7 +94,7 @@ h3{
 }
 
 .rorschach-image img{
-    width: 80%;
+    width: 100%;
     max-width: 500px;
     height: auto;
     padding: 10px;
@@ -192,7 +192,8 @@ h3{
     }
     
     .rorschach-image img {
-        width: 90%;
+        width: 100%;
+        max-width: 550px;
     }
     
     .poem-text pre {
@@ -208,7 +209,8 @@ h3{
     }
     
     .rorschach-image img {
-        width: 95%;
+        width: 100%;
+        max-width: 450px;
         border-radius: 20px;
     }
     
